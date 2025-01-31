@@ -2,6 +2,7 @@
 
 namespace Karpik.StatAndAbilities
 {
+    //DragonECS-based
     public class StatPool<T>
         where T : struct, IStat
     {
