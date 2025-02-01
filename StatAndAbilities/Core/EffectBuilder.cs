@@ -1,4 +1,6 @@
-﻿namespace Karpik.StatAndAbilities
+﻿using System.Linq;
+
+namespace Karpik.StatAndAbilities
 {
     public static class EffectBuilder
     {

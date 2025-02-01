@@ -1,4 +1,6 @@
-﻿namespace Karpik.StatAndAbilities
+﻿using System;
+
+namespace Karpik.StatAndAbilities
 {
     [AttributeUsage(AttributeTargets.Struct)]
     public class StatAttribute : Attribute

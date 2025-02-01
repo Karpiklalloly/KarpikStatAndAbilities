@@ -25,6 +25,7 @@ public static class RangeStatGenerator
             $$"""
               using Karpik.StatAndAbilities;
               using System;
+              using System.Collections.Generic;
               using System.Runtime.CompilerServices;
                               
               namespace {{namespaceName}}
@@ -60,6 +61,7 @@ public static class RangeStatGenerator
         string source = 
             $$"""
             using Karpik.StatAndAbilities;
+            using System;
             using System.Runtime.CompilerServices;
             
             namespace {{namespaceName}}

@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Karpik.StatAndAbilities
 {
@@ -54,7 +55,7 @@ namespace Karpik.StatAndAbilities
         public ref T Get(int entityID)
         {
             ValidateMapping(entityID);
-#if (DEBUG && !DISABLE_DEBUG) || ENABLE_DRAGONECS_ASSERT_CHEKS
+#if (DEBUG && !DISABLE_DEBUG)
             if (!Has(entityID)) { throw new Exception(entityID.ToString()); }
 #endif
             return ref _items[_mapping[entityID]];
@@ -63,7 +64,7 @@ namespace Karpik.StatAndAbilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ref readonly T Read(int entityID)
         {
-#if (DEBUG && !DISABLE_DEBUG) || ENABLE_DRAGONECS_ASSERT_CHEKS
+#if (DEBUG && !DISABLE_DEBUG)
             if (!Has(entityID)) { throw new Exception(entityID.ToString()); }
 #endif
             return ref _items[_mapping[entityID]];
@@ -104,7 +105,7 @@ namespace Karpik.StatAndAbilities
         public void Del(int entityID)
         {
             ref int itemIndex = ref _mapping[entityID];
-#if (DEBUG && !DISABLE_DEBUG) || ENABLE_DRAGONECS_ASSERT_CHEKS
+#if (DEBUG && !DISABLE_DEBUG)
             if (itemIndex <= 0) { throw new Exception(entityID.ToString()); }
 #endif
             DisableStat(ref _items[itemIndex]);
@@ -129,7 +130,7 @@ namespace Karpik.StatAndAbilities
         {
             ValidateMapping(fromEntityID);
             ValidateMapping(toEntityID);
-#if (DEBUG && !DISABLE_DEBUG) || ENABLE_DRAGONECS_ASSERT_CHEKS
+#if (DEBUG && !DISABLE_DEBUG)
             if (!Has(fromEntityID)) { throw new Exception(fromEntityID.ToString());; }
 #endif
             CopyComponent(ref Get(fromEntityID), ref TryAddOrGet(toEntityID));

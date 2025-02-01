@@ -1,4 +1,6 @@
-﻿namespace Karpik.StatAndAbilities
+﻿using System;
+
+namespace Karpik.StatAndAbilities
 {
     [Serializable]
     public readonly struct Buff : IEquatable<Buff>

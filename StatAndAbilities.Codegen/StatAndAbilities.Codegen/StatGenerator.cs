@@ -25,6 +25,7 @@ public static class StatGenerator
             $$"""
               using Karpik.StatAndAbilities;
               using System;
+              using System.Collections.Generic;
               using System.Runtime.CompilerServices;
                               
               namespace {{namespaceName}}
@@ -63,6 +64,8 @@ public static class StatGenerator
         string source = 
             $$"""
             using Karpik.StatAndAbilities;
+            using System;
+            using System.Linq;
             using System.Runtime.CompilerServices;
             
             namespace {{namespaceName}}
