@@ -40,7 +40,6 @@ public class Main
                 case ConsoleKey.K:
                     health.ApplyBuffInstantly(new Buff(-damage.ModifiedValue, BuffType.Add), BuffRange.Value);
                     break;
-                    break;
             }
         }
     }
@@ -57,7 +56,10 @@ public class Main
     {
         ref var health = ref player.GetStat<Health>();
         health.ActualizeEffects();
+        health.ToBounds();
         
         Console.WriteLine($"Health = {health.ValueModified()}/{health.MinModified()}/{health.MaxModified()}");
+        var onEdge = health.IsOnTheEdge();
+        if (onEdge == -1) Console.WriteLine("Is dead");
     }
 }

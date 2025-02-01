@@ -139,7 +139,31 @@ public static class RangeStatGenerator
                     public static float MinModified(ref this {{name}} stat) => stat.MinStat.ModifiedValue;
                     
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                    public static float MaxModified(ref this {{name}} stat) => stat.MaxStat.ModifiedValue;}
+                    public static float MaxModified(ref this {{name}} stat) => stat.MaxStat.ModifiedValue;
+                    
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public static void ToBounds(ref this {{name}} stat)
+                    {
+                        if (stat.ValueStat.ModifiedValue < stat.MinStat.ModifiedValue) stat.ValueStat.ModifiedValue = stat.MinStat.ModifiedValue;
+                        if (stat.ValueStat.ModifiedValue > stat.MaxStat.ModifiedValue) stat.ValueStat.ModifiedValue = stat.MaxStat.ModifiedValue;
+                    }
+                    
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public static bool IsOutOfBounds(ref this {{name}} stat)
+                    {
+                        if (stat.ValueStat.ModifiedValue < stat.MinStat.ModifiedValue) return true;
+                        if (stat.ValueStat.ModifiedValue > stat.MaxStat.ModifiedValue) return true;
+                        return false;
+                    }
+                    
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public static int IsOnTheEdge(ref this {{name}} stat)
+                    {
+                        if (stat.ValueStat.ModifiedValue == stat.MinStat.ModifiedValue) return -1;
+                        if (stat.ValueStat.ModifiedValue == stat.MaxStat.ModifiedValue) return 1;
+                        return 0;
+                    }
+                }
             }
             """;
         context.AddSource($"{name}.Stat.Extensions.g.cs", SourceText.From(source, Encoding.UTF8));
