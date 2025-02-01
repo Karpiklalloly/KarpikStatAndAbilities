@@ -15,7 +15,10 @@ namespace Karpik.StatAndAbilities
         
             public BuilderPart(string name, float duration = -1, int order = 0, Buff[] buffs = null)
             {
-            
+                _name = name;
+                _duration = duration;
+                _order = order;
+                _buffs = buffs;
             }
         
             public BuilderPart WithBuffs(params Buff[] buffs)

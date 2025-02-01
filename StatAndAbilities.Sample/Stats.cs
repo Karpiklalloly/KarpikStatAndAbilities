@@ -1,6 +1,4 @@
-﻿using Karpik.StatAndAbilities;
-
-namespace StatAndAbilities.Sample;
+﻿namespace Karpik.StatAndAbilities.Sample;
 
 [Stat]
 public partial struct Damage { }

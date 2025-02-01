@@ -1,4 +1,4 @@
-﻿namespace Karpik.StatAndAbilities
+﻿namespace Karpik.StatAndAbilities.Sample
 {
     public class Entity
     {

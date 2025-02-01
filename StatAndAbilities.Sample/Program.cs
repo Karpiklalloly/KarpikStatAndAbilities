@@ -1,4 +1,4 @@
-﻿namespace StatAndAbilities.Sample;
+﻿namespace Karpik.StatAndAbilities.Sample;
 
 class Program
 {

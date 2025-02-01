@@ -1,36 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Karpik.StatAndAbilities.Codegen.Attributes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using MoveReplace;
 
-namespace Karpik.StatAndAbilities.Codegen;
-
-[Generator]
-public class GenStatStruct : ISourceGenerator
+namespace Karpik.StatAndAbilities.Codegen
 {
-    public const string Stat = StatAttribute.AttributeName;
-    public const string RangeStat = RangeStatAttribute.AttributeName;
+    [Generator]
+    public class GenStatStruct : ISourceGenerator
+    {
+        public const string Stat = StatAttribute.AttributeName;
+        public const string RangeStat = RangeStatAttribute.AttributeName;
     
-    public void Initialize(GeneratorInitializationContext context)
-    {
-        context.RegisterForSyntaxNotifications(() => new StructWithStatReceiver());
-    }
-
-    public void Execute(GeneratorExecutionContext context)
-    {
-        if (context.SyntaxReceiver is not StructWithStatReceiver receiver) return;
-
-        Span<StructDeclarationSyntax> structs = receiver.Structs.ToArray();
-        foreach (var s in structs)
+        public void Initialize(GeneratorInitializationContext context)
         {
-            if (s.HasAttribute(Stat))
+            context.RegisterForSyntaxNotifications(() => new StructWithStatReceiver());
+        }
+
+        public void Execute(GeneratorExecutionContext context)
+        {
+            if (context.SyntaxReceiver is not StructWithStatReceiver receiver) return;
+
+            Span<StructDeclarationSyntax> structs = receiver.Structs.ToArray();
+            foreach (var s in structs)
             {
-                StatGenerator.Generate(context, s);
+                var model = context.Compilation.GetSemanticModel(s.SyntaxTree);
+                var structSymbol = model.GetDeclaredSymbol(s) as INamedTypeSymbol;
+                var name = structSymbol.Name;
+                var namespaceName = structSymbol.ContainingNamespace.ToString();
+                var accessibility = structSymbol.DeclaredAccessibility.ToString().ToLower();
+                if (s.HasAttribute(Stat))
+                {
+                    Write(context, StatGenerator.Generate(name, namespaceName, accessibility));
+                }
+                else if (s.HasAttribute(RangeStat))
+                {
+                    Write( context, RangeStatGenerator.Generate(name, namespaceName, accessibility));
+                }
             }
-            else if (s.HasAttribute(RangeStat))
+        }
+
+        private void Write(GeneratorExecutionContext context, List<(string, string)> list)
+        {
+            foreach (var tuple in list)
             {
-                RangeStatGenerator.Generate(context, s);
+                var name = tuple.Item1;
+                var text = tuple.Item2;
+                context.AddSource(name, SourceText.From(text, Encoding.UTF8));
             }
         }
     }
