@@ -27,18 +27,23 @@ namespace Karpik.StatAndAbilities.Codegen
             Span<StructDeclarationSyntax> structs = receiver.Structs.ToArray();
             foreach (var s in structs)
             {
-                var model = context.Compilation.GetSemanticModel(s.SyntaxTree);
-                var structSymbol = model.GetDeclaredSymbol(s) as INamedTypeSymbol;
-                var name = structSymbol.Name;
-                var namespaceName = structSymbol.ContainingNamespace.ToString();
-                var accessibility = structSymbol.DeclaredAccessibility.ToString().ToLower();
                 if (s.HasAttribute(Stat))
                 {
+                    var model = context.Compilation.GetSemanticModel(s.SyntaxTree);
+                    var structSymbol = model.GetDeclaredSymbol(s) as INamedTypeSymbol;
+                    var name = structSymbol.Name;
+                    var namespaceName = structSymbol.ContainingNamespace.ToString();
+                    var accessibility = structSymbol.DeclaredAccessibility.ToString().ToLower();
                     Write(context, StatGenerator.Generate(name, namespaceName, accessibility));
                 }
                 else if (s.HasAttribute(RangeStat))
                 {
-                    Write( context, RangeStatGenerator.Generate(name, namespaceName, accessibility));
+                    var model = context.Compilation.GetSemanticModel(s.SyntaxTree);
+                    var structSymbol = model.GetDeclaredSymbol(s) as INamedTypeSymbol;
+                    var name = structSymbol.Name;
+                    var namespaceName = structSymbol.ContainingNamespace.ToString();
+                    var accessibility = structSymbol.DeclaredAccessibility.ToString().ToLower();
+                    Write(context, RangeStatGenerator.Generate(name, namespaceName, accessibility));
                 }
             }
         }

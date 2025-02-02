@@ -26,6 +26,22 @@ namespace {namespaceName}
     [Serializable]
     {accessibility} partial struct {name} : IRangeStat
     {{
+        public float BaseValue
+        {{
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ValueStat.BaseValue;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => ValueStat.BaseValue = value;
+        }}
+
+        public float ModifiedValue
+        {{
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ValueStat.ModifiedValue;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => ValueStat.ModifiedValue = value;
+        }}
+
         public DefaultStat ValueStat;
         public DefaultStat MinStat;
         public DefaultStat MaxStat;

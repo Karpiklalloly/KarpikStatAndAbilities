@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Karpik.StatAndAbilities
 {
     public static class EffectBuilder
     {
-        public static BuilderPart Start() => new BuilderPart(string.Empty, -1, 0, []);
+        public static BuilderPart Start() => new BuilderPart(string.Empty, -1, 0, Array.Empty<Buff>());
     
         public struct BuilderPart
         {
@@ -52,7 +53,7 @@ namespace Karpik.StatAndAbilities
         
             public Effect Build()
             {
-                _buffs ??= [];
+                _buffs ??= Array.Empty<Buff>();
                 _name ??= string.Empty;
                 if (_duration == 0) _duration = -1;
             
