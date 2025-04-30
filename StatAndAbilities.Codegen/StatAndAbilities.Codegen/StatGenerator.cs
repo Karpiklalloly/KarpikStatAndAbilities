@@ -16,7 +16,7 @@ namespace Karpik.StatAndAbilities.Codegen
         private static (string, string) GenerateStat(string name, string namespaceName, string accessibility = "public")
         {
             var source = 
-                $@"using Karpik.StatAndAbilities;
+$@"using Karpik.StatAndAbilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -27,12 +27,31 @@ namespace {namespaceName}
     {accessibility} partial struct {name} : IStat
     {{
         public float BaseValue;
-        public float ModifiedValue;
+        public float ModifiedValue
+        {{
+            get
+            {{
+                if (IsDirty)
+                {{
+                    IsDirty = false;
+                    this.ActualizeEffects();
+                }}
+                return _modifiedValue;
+            }}
+            set
+            {{
+                _modifiedValue = value;
+            }}
+        }}
         public List<Effect> Effects;
-        
+        public bool IsDirty;        
+
+        private float _modifiedValue;
+
         public void Init()
         {{
             Effects = new List<Effect>();
+            IsDirty = true;
         }}
         
         public void DeInit()
@@ -54,7 +73,7 @@ namespace {namespaceName}
         private static (string, string) GenerateStatExtensions(string name, string namespaceName)
         {
             string source = 
-                $@"using Karpik.StatAndAbilities;
+$@"using Karpik.StatAndAbilities;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -77,6 +96,7 @@ namespace {namespaceName}
             }}
             
             stat.Effects.Add(effect);
+            stat.IsDirty = true;
         }}
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -147,6 +167,7 @@ namespace {namespaceName}
                 }}
             }}
             
+            stat.IsDirty = false;
             stat.ModifiedValue = stat.BaseValue;
             foreach (var buff in buffs)
             {{
@@ -174,6 +195,7 @@ namespace {namespaceName}
                 default:
                     throw new ArgumentOutOfRangeException();
             }}
+            stat.IsDirty = true;
         }}
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

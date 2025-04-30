@@ -3,5 +3,5 @@
 [Stat]
 public partial struct Damage { }
 
-[RangeStat]
+[EzRangeStat]
 public partial struct Health { }

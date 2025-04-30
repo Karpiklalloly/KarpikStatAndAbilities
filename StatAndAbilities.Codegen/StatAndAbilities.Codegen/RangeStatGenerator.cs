@@ -175,7 +175,7 @@ namespace {namespaceName}
         }}
     }}
 }}";
-            return ($"{name}.Stat.Extensions.g.cs", source);
+            return ($"{name}.RangeStat.Extensions.g.cs", source);
         }
     }
 }

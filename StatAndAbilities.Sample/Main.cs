@@ -5,19 +5,20 @@ public class Main
     public void Run()
     {
         var player = new Entity(1);
+        float healthModifier = 10;
         ref var damage = ref player.AddStat<Damage>();
         ref var health = ref player.AddStat<Health>();
         
         var damageBuff = EffectBuilder.Start()
-            .WithBuffs(new Buff(10, BuffType.Add));
+            .WithBuffs(new Buff(healthModifier, BuffType.Add));
         var healthBuff = EffectBuilder.Start()
-            .WithBuffs(new Buff(10, BuffType.Add));
+            .WithBuffs(new Buff(healthModifier, BuffType.Add));
         
         damage.BaseValue = 10;
         
         health.MinStat.BaseValue = 0;
         health.MaxStat.BaseValue = 100;
-        health.ValueStat.BaseValue = 100;
+        health.Value = 100;
         
         while (true)
         {
@@ -33,10 +34,12 @@ public class Main
                     damage.ApplyEffect(damageBuff.Build());
                     break;
                 case ConsoleKey.H:
-                    health.ApplyEffect(healthBuff.Build(), BuffRange.Value | BuffRange.Max);
+                    var buff = healthBuff.Build();
+                    health.ApplyEffect(buff, BuffEzRange.Max);
+                    health.Value += healthModifier;
                     break;
                 case ConsoleKey.K:
-                    health.ApplyBuffInstantly(new Buff(-damage.ModifiedValue, BuffType.Add), BuffRange.Value);
+                    health.Value -= damage.ModifiedValue;
                     break;
             }
         }
@@ -54,9 +57,8 @@ public class Main
     {
         ref var health = ref player.GetStat<Health>();
         health.ActualizeEffects();
-        health.ToBounds();
         
-        Console.WriteLine($"Health = {health.ValueModified()}/{health.MinModified()}/{health.MaxModified()}");
+        Console.WriteLine($"Health = {health.Value}/{health.MinModified()}/{health.MaxModified()}");
         var onEdge = health.IsOnTheEdge();
         if (onEdge == -1) Console.WriteLine("Is dead");
     }

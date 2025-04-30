@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Karpik.StatAndAbilities.Codegen;
 
-public class StructWithStatReceiver : ISyntaxReceiver
+public class StructReceiver : ISyntaxReceiver
 {
     public List<StructDeclarationSyntax> Structs { get; } = new();
     

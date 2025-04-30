@@ -7,4 +7,6 @@
     }
 
     public interface IRangeStat : IStat { }
+    
+    public interface IEzRangeStat : IStat { }
 }
